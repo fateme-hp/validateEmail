@@ -54,9 +54,18 @@ form * {
 textarea {
   border: 1px solid #fff;
   background-color: rgba(238, 238, 238, 0.541);
+  color: #000;
 }
 form input {
   border-bottom: 1px solid #fff;
+  color: #000;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
 }
 .formBtn {
   margin: 10px;
@@ -76,4 +85,8 @@ button[type="submit"] {
 }
 button[type="reset"] {
   background-color: #f36656d7;
+}
+button:disabled {
+  background-color: #ccc;
+  cursor: auto;
 }
