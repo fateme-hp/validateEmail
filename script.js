@@ -1,21 +1,28 @@
 "use strict";
 
 // variables
+// form buttons
 const sendBtn = document.querySelector("#submit"),
+  resetBtn = document.querySelector("#reset"),
+// form input 
   sender = document.querySelector("#sender"),
   receiver = document.querySelector("#receiver"),
   emailSubject = document.querySelector("#emailSubject"),
   emailContent = document.querySelector("#content");
+// Array
 let filledField = [];
 
 // event listeners
+// loading 
 document.addEventListener("DOMContentLoaded", appInitial);
+// form actions 
 sender.addEventListener("blur", validateForm);
 receiver.addEventListener("blur", validateForm);
 emailSubject.addEventListener("blur", validateForm);
 // emailContent.addEventListener('blur',validateForm)
 emailSubject.addEventListener("blur", validateEmail);
 emailContent.addEventListener("blur", validateEmail);
+resetBtn.addEventListener("click", resetStyle);
 
 // function
 // disable send button by loading dom
@@ -41,7 +48,7 @@ function validateField(field) {
     // if input has value, add it to filled array
 
     // before pushing field to array , check array
-    // if array does not include it, then add to filledfield array
+    // if array does not include it, then add it to filledfield array
     if (!filledField.includes(field)) {
       filledField.push(field);
     }
@@ -95,4 +102,8 @@ function validateEmail() {
     //    `
     // );
   }
+}
+
+function resetStyle(){
+ location.reload();
 }
