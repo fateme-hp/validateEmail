@@ -4,24 +4,22 @@
 // form buttons
 const sendBtn = document.querySelector("#submit"),
   resetBtn = document.querySelector("#reset"),
-// form input 
+  // form input
   sender = document.querySelector("#sender"),
   receiver = document.querySelector("#receiver"),
   emailSubject = document.querySelector("#emailSubject"),
   emailContent = document.querySelector("#content");
-// Array
-let filledField = [];
 
 // event listeners
-// loading 
+// loading
 document.addEventListener("DOMContentLoaded", appInitial);
-// form actions 
+// form actions
 sender.addEventListener("blur", validateForm);
 receiver.addEventListener("blur", validateForm);
 emailSubject.addEventListener("blur", validateForm);
-// emailContent.addEventListener('blur',validateForm)
-emailSubject.addEventListener("blur", validateEmail);
-emailContent.addEventListener("blur", validateEmail);
+emailContent.addEventListener("blur", validateForm);
+// emailSubject.addEventListener("blur", validateEmail);
+// emailContent.addEventListener("blur", validateEmail);
 resetBtn.addEventListener("click", resetStyle);
 
 // function
@@ -34,6 +32,12 @@ function appInitial() {
 // validate fields
 function validateForm() {
   validateField(this);
+
+  if (this.type === "email") {
+    validateEmail(this);
+  }
+
+  activeBtn();
 }
 
 // check if input has value
@@ -41,69 +45,44 @@ function validateField(field) {
   if (!field.value) {
     field.style.borderBottomColor = "#f36656d7";
     field.style.borderBottomWidth = "2px";
+    field.classList.remove("correct");
   } else {
     field.style.borderBottomColor = "#00b4b7bb";
     field.style.borderBottomWidth = "2px";
-
-    // if input has value, add it to filled array
-
-    // before pushing field to array , check array
-    // if array does not include it, then add it to filledfield array
-    if (!filledField.includes(field)) {
-      filledField.push(field);
-    }
-  }
-  activeBtn();
-}
-
-// after filling required fields, active send button
-// check the length of filled array
-function activeBtn() {
-  if (filledField.length < 3) {
-    appInitial();
-  } else {
-    sendBtn.disabled = false;
+    field.classList.add("correct");
   }
 }
 
 // validate email
 
-function validateEmail() {
-  if (
-    sender.value.includes("@") == false ||
-    receiver.value.includes("@") == false
-  ) {
+function validateEmail(field) {
+  const emailText = field.value;
 
-// alert(
-//     `
-//         Your email address must includes '@', a prefix and a domain.
-//         like "example@mail.com"
-
-//         NOTE:
-//         The prefix appears to the left of the @ symbol.
-//         The domain appears to the right of the @ symbol.
-//        `
-// )
-    // let alertNotif = document.createElement("div");
-    // alertNotif.classList.add("alert");
-
-    // document.querySelector(".container").appendChild(alertNotif);
-
-    // let alertText = document.createElement("pre");
-    // alertNotif.appendChild(alertText);
-    // alertText.append(
-    //   `
-    //     Your email address must includes '@', a prefix and a domain.
-    //     like "example@mail.com"
-
-    //     NOTE:
-    //     The prefix appears to the left of the @ symbol.
-    //     The domain appears to the right of the @ symbol.
-    //    `
-    // );
+  if (emailText.includes("@")) {
+    field.style.borderBottomColor = "#00b4b7bb";
+    field.style.borderBottomWidth = "2px";
+    field.classList.add("correct");
+  } else {
+    field.style.borderBottomColor = "#f36656d7";
+    field.style.borderBottomWidth = "2px";
+    field.classList.remove("correct");
   }
 }
 
-function resetStyle(){
- location.reload();
+// after filling required fields, active send button
+
+function activeBtn() {
+  const correct = document.querySelectorAll(".correct");
+
+  if (correct.length === 4) {
+    sendBtn.disabled = false;
+  } else {
+    sendBtn.disabled = true;
+  }
+}
+
+function resetStyle(field) {
+   location.reload();
+  // console.log(field);
+  // field.borderBottomColor = "none";
 }
