@@ -10,7 +10,7 @@
 <body>
    <div class="container">
     <div>
-        <form action="" >
+        <form action="#" id="form">
             <Label> From:</Label>
             <input type="email" id="sender" required>
             <Label>To:</Label>
@@ -21,12 +21,16 @@
             <textarea name="" id="content" cols="30" rows="10"  required></textarea>
             <div class="formBtn">
                 <button type="submit" id="submit" > Send </button>
-                <button type="reset" id="reset">Reset</button>
+                <button type="reset" id="resetBtn">Reset</button>
             </div>
         </form>
     </div>
-    <div>
-        <img src="img/meilleures.png" alt="">
+    <div id="right-col">
+        <img src="img/meilleures.png" id="mailImg" alt="">
+
+        <div id="loaders">
+            <img src="img/spinner.gif" id="spinner" alt="">
+        </div>
     </div>
    </div>
     

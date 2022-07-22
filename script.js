@@ -3,12 +3,17 @@
 // variables
 // form buttons
 const sendBtn = document.querySelector("#submit"),
-  resetBtn = document.querySelector("#reset"),
+  resetBtn = document.querySelector("#resetBtn"),
   // form input
   sender = document.querySelector("#sender"),
   receiver = document.querySelector("#receiver"),
   emailSubject = document.querySelector("#emailSubject"),
-  emailContent = document.querySelector("#content");
+  emailContent = document.querySelector("#content"),
+  // form elements
+  form = document.querySelector('#form'),
+  spinner = document.querySelector('#spinner'),
+  loaders = document.querySelector('#loaders'),
+  mailImg = document.querySelector('#mailImg');
 
 // event listeners
 // loading
@@ -17,13 +22,21 @@ document.addEventListener("DOMContentLoaded", appInitial);
 sender.addEventListener("blur", validateForm);
 receiver.addEventListener("blur", validateForm);
 emailSubject.addEventListener("blur", validateForm);
-emailContent.addEventListener("blur", validateForm);
-resetBtn.addEventListener("click", resetStyle);
+emailContent.addEventListener("keyup", validateForm);
+resetBtn.addEventListener("click", resetForm);
+// form submitting 
+form.addEventListener("submit" , submitForm)
 
 // function
 // disable send button by loading dom
 function appInitial() {
   sendBtn.disabled = true;
+
+  // create a nodeList of input elements 
+  const borderedInput = document.querySelectorAll("form input , form textarea");
+// for each input remove validation classlist 
+  borderedInput.forEach(element => {
+   element.classList.remove("correct") ||  element.classList.remove("error")});
 }
 
 // validate
@@ -45,15 +58,13 @@ function validateField(field) {
   // if input has no value 
   // change border color to red and remove correct class
   if (!field.value) {
-    field.style.borderBottomColor = "#f36656d7";
-    field.style.borderBottomWidth = "2px";
+    field.classList.add("error");
     field.classList.remove("correct");
   } 
    // if input has value 
   // change border color and add correct class
   else { 
-    field.style.borderBottomColor = "#00b4b7bb";
-    field.style.borderBottomWidth = "2px";
+    field.classList.remove("error");
     field.classList.add("correct");
   }
 }
@@ -68,13 +79,11 @@ function validateEmail(field) {
   // if email value includes "@"
   // change border color and add correct class
   if (emailText.includes("@")) {
-    field.style.borderBottomColor = "#00b4b7bb";
-    field.style.borderBottomWidth = "2px";
+    field.classList.remove("error");
     field.classList.add("correct");
   }  // otherwise change border color to red and remove correct class
   else {
-    field.style.borderBottomColor = "#f36656d7";
-    field.style.borderBottomWidth = "2px";
+    field.classList.add("error");
     field.classList.remove("correct");
   }
 }
@@ -94,22 +103,46 @@ function activeBtn() {
   }
 }
 
-// if reset button was clicked 
-function resetStyle(field) {
+// while  submitting form 
 
-  // refresh the page 
-  //  location.reload();
- 
-//or 
+ function submitForm(e){
 
-// change inputs border bottom 
+  e.preventDefault();
 
-// create a nodeList of input elements 
-  const borderedInput = document.querySelectorAll("form input , form textarea");
-// for each input change border style to default design 
-  borderedInput.forEach(element => {
-    element.style.borderBottomColor = "#fff";
-    element.style.borderBottomWidth = "1px";
-  });
-  
-}
+  // change display for mail and spinner images 
+  // remove mail img
+  // add spinner gif 
+  mailImg.style.display ="none";
+  spinner.style.display ="block";
+
+ // create an image element for successfully sent mail
+  let sentImg = document.createElement("img");
+  sentImg.src = "img/sent.png"
+
+  // reset form after 2s 
+  setTimeout(function(){
+   
+    // display sent img instead of spinner
+    spinner.style.display ="none";
+    loaders.appendChild(sentImg)
+
+    // display default style after 3s
+    // bring back mail img 
+    // remove sent img 
+    setTimeout(() => {
+      mailImg.style.display ="block";
+      sentImg.remove();
+    }
+    ,3000)
+
+    resetForm()
+
+  }, 2000)
+
+ }
+
+ // reset form 
+ function resetForm(){
+  form.reset();
+  appInitial();
+ }
